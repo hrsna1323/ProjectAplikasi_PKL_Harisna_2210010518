@@ -56,10 +56,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Server</th>
-                            <td>{{ $skpd->server->nama_server ?? '-' }}</td>
-                        </tr>
-                        <tr>
                             <th>Dibuat</th>
                             <td>{{ $skpd->created_at->format('d M Y H:i') }}</td>
                         </tr>

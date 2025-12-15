@@ -111,7 +111,7 @@ Task list ini mengikuti pendekatan incremental development, dimulai dari setup d
     - Method logout() dengan session destroy
     - Method checkRole() untuk mendapatkan role user saat ini
     - _Requirements: 1.2, 1.3, 1.4_
-  - [ ] 3.2 Write property test untuk role-based access control
+  - [x] 3.2 Write property test untuk role-based access control
 
 
 

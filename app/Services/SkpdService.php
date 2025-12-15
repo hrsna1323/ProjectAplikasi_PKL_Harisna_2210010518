@@ -211,7 +211,7 @@ class SkpdService
      */
     public function getSkpdById(int $id): ?Skpd
     {
-        return Skpd::with(['contents', 'publishers', 'server'])->find($id);
+        return Skpd::with(['contents', 'publishers'])->find($id);
     }
 
     /**

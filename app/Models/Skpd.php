@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Skpd extends Model
@@ -29,7 +28,6 @@ class Skpd extends Model
         'email',
         'kuota_bulanan',
         'status',
-        'server_id',
     ];
 
     /**
@@ -76,14 +74,6 @@ class Skpd extends Model
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
-    }
-
-    /**
-     * Get the server location for this SKPD.
-     */
-    public function server(): BelongsTo
-    {
-        return $this->belongsTo(LokasiServer::class, 'server_id');
     }
 
     /**

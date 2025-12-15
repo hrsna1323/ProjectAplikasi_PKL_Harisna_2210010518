@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSkpdRequest;
 use App\Http\Requests\UpdateSkpdRequest;
 use App\Models\Skpd;
-use App\Models\LokasiServer;
 use App\Services\SkpdService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -43,11 +42,7 @@ class SkpdController extends Controller
      */
     public function create(): View
     {
-        $servers = LokasiServer::orderBy('nama_server')->get();
-
-        return view('admin.skpd.create', [
-            'servers' => $servers,
-        ]);
+        return view('admin.skpd.create');
     }
 
 
@@ -109,11 +104,9 @@ class SkpdController extends Controller
     public function edit(int $id): View
     {
         $skpd = Skpd::findOrFail($id);
-        $servers = LokasiServer::orderBy('nama_server')->get();
 
         return view('admin.skpd.edit', [
             'skpd' => $skpd,
-            'servers' => $servers,
         ]);
     }
 

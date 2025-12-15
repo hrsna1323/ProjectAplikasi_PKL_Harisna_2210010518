@@ -84,21 +84,6 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="server_id" class="form-label">Lokasi Server</label>
-                    <select class="form-select @error('server_id') is-invalid @enderror" id="server_id" name="server_id">
-                        <option value="">-- Pilih Server --</option>
-                        @foreach($servers as $server)
-                            <option value="{{ $server->id }}" {{ old('server_id', $skpd->server_id) == $server->id ? 'selected' : '' }}>
-                                {{ $server->nama_server }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('server_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-save me-1"></i> Update
