@@ -154,4 +154,29 @@ class VerificationController extends Controller
             'verificationHistory' => $verificationHistory,
         ]);
     }
+
+    /**
+     * Display general verification history page.
+     * 
+     * Requirements: 1.1, 1.4
+     */
+    public function historyIndex(Request $request): View
+    {
+        $filters = [
+            'start_date' => $request->input('start_date'),
+            'end_date' => $request->input('end_date'),
+            'skpd_id' => $request->input('skpd_id'),
+            'status' => $request->input('status'),
+            'search' => $request->input('search'),
+        ];
+
+        $verifications = $this->verificationService->getAllVerificationHistory($filters);
+        $skpds = Skpd::orderBy('nama_skpd')->get();
+
+        return view('operator.verification.history-index', [
+            'verifications' => $verifications,
+            'skpds' => $skpds,
+            'filters' => $filters,
+        ]);
+    }
 }

@@ -1,84 +1,103 @@
 @extends('layouts.app')
 
 @section('title', 'Review Konten')
+@section('page-title', 'Review Konten')
+@section('page-subtitle', 'Verifikasi konten yang disubmit publisher')
 
 @section('content')
-<div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 mb-1">Review Konten</h1>
-            <p class="text-muted mb-0">Detail konten untuk verifikasi</p>
-        </div>
-        <a href="{{ route('operator.verification.index') }}" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Kembali
+<div class="space-y-6">
+    <!-- Breadcrumb & Back -->
+    <div class="flex items-center justify-between">
+        <nav class="flex items-center gap-2 text-sm">
+            <a href="{{ route('operator.verification.index') }}" class="text-gray-500 hover:text-blue-600 flex items-center gap-1">
+                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                Verifikasi
+            </a>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
+            <span class="text-gray-800 font-medium">Review Konten</span>
+        </nav>
+        <a href="{{ route('operator.verification.index') }}" class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800 font-medium">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Kembali
         </a>
     </div>
 
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
-    <div class="row">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Content Detail -->
-        <div class="col-lg-8">
-            <div class="card mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Detail Konten</h5>
-                    <span class="badge bg-warning text-dark">{{ $content->status }}</span>
+        <div class="lg:col-span-2 space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                            <i data-lucide="file-text" class="w-5 h-5 text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">Detail Konten</h2>
+                            <p class="text-sm text-gray-500">Informasi lengkap konten</p>
+                        </div>
+                    </div>
+                    <span class="px-3 py-1.5 bg-yellow-100 text-yellow-700 rounded-lg text-sm font-semibold flex items-center gap-1">
+                        <i data-lucide="clock" class="w-4 h-4"></i>
+                        {{ $content->status }}
+                    </span>
                 </div>
-                <div class="card-body">
-                    <h4>{{ $content->judul }}</h4>
+                <div class="p-6 space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800">{{ $content->judul }}</h3>
+                    </div>
                     
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <small class="text-muted">SKPD</small>
-                            <p class="mb-0">{{ $content->skpd->nama_skpd ?? '-' }}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">SKPD</p>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="building-2" class="w-4 h-4 text-gray-400"></i>
+                                <p class="text-gray-800 font-medium">{{ $content->skpd->nama_skpd ?? '-' }}</p>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <small class="text-muted">Kategori</small>
-                            <p class="mb-0">
-                                <span class="badge bg-secondary">{{ $content->kategori->nama_kategori ?? '-' }}</span>
-                            </p>
+                        <div>
+                            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Kategori</p>
+                            <span class="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium">
+                                <i data-lucide="folder" class="w-3.5 h-3.5"></i>
+                                {{ $content->kategori->nama_kategori ?? '-' }}
+                            </span>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Publisher</p>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="user" class="w-4 h-4 text-gray-400"></i>
+                                <p class="text-gray-800 font-medium">{{ $content->publisher->name ?? '-' }}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Tanggal Publikasi</p>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="calendar" class="w-4 h-4 text-gray-400"></i>
+                                <p class="text-gray-800 font-medium">{{ $content->tanggal_publikasi?->format('d F Y') ?? '-' }}</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <small class="text-muted">Publisher</small>
-                            <p class="mb-0">{{ $content->publisher->name ?? '-' }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <small class="text-muted">Tanggal Publikasi</small>
-                            <p class="mb-0">{{ $content->tanggal_publikasi?->format('d/m/Y') ?? '-' }}</p>
-                        </div>
+                    <div>
+                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Deskripsi</p>
+                        <p class="text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-xl">{{ $content->deskripsi }}</p>
                     </div>
 
-                    <div class="mb-3">
-                        <small class="text-muted">Deskripsi</small>
-                        <p class="mb-0">{{ $content->deskripsi }}</p>
+                    <div>
+                        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">URL Publikasi</p>
+                        <a href="{{ $content->url_publikasi }}" target="_blank" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 bg-blue-50 px-4 py-3 rounded-xl font-medium">
+                            <i data-lucide="external-link" class="w-5 h-5"></i>
+                            {{ $content->url_publikasi }}
+                        </a>
                     </div>
 
-                    <div class="mb-3">
-                        <small class="text-muted">URL Publikasi</small>
-                        <p class="mb-0">
-                            <a href="{{ $content->url_publikasi }}" target="_blank" class="text-primary">
-                                {{ $content->url_publikasi }}
-                                <i class="bi bi-box-arrow-up-right ms-1"></i>
-                            </a>
-                        </p>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <small class="text-muted">Tanggal Submit</small>
-                            <p class="mb-0">{{ $content->created_at->format('d/m/Y H:i') }}</p>
+                    <div class="grid grid-cols-2 gap-6 pt-4 border-t border-gray-100">
+                        <div>
+                            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Tanggal Submit</p>
+                            <p class="text-gray-600 text-sm">{{ $content->created_at->format('d M Y, H:i') }}</p>
                         </div>
-                        <div class="col-md-6">
-                            <small class="text-muted">Terakhir Update</small>
-                            <p class="mb-0">{{ $content->updated_at->format('d/m/Y H:i') }}</p>
+                        <div>
+                            <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Terakhir Update</p>
+                            <p class="text-gray-600 text-sm">{{ $content->updated_at->format('d M Y, H:i') }}</p>
                         </div>
                     </div>
                 </div>
@@ -86,99 +105,141 @@
 
             <!-- Verification History -->
             @if($verificationHistory->isNotEmpty())
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Riwayat Verifikasi</h5>
-                </div>
-                <div class="card-body">
-                    <div class="timeline">
-                        @foreach($verificationHistory as $verification)
-                            <div class="d-flex mb-3">
-                                <div class="flex-shrink-0">
-                                    @if($verification->isApproved())
-                                        <span class="badge bg-success rounded-circle p-2">
-                                            <i class="bi bi-check-lg"></i>
-                                        </span>
-                                    @else
-                                        <span class="badge bg-danger rounded-circle p-2">
-                                            <i class="bi bi-x-lg"></i>
-                                        </span>
-                                    @endif
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <div class="d-flex justify-content-between">
-                                        <strong>{{ $verification->status }}</strong>
-                                        <small class="text-muted">{{ $verification->verified_at?->format('d/m/Y H:i') }}</small>
-                                    </div>
-                                    <p class="mb-0 text-muted">oleh {{ $verification->verifikator->name ?? '-' }}</p>
-                                    @if($verification->alasan)
-                                        <p class="mb-0 mt-1"><em>"{{ $verification->alasan }}"</em></p>
-                                    @endif
-                                </div>
-                            </div>
-                        @endforeach
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-6 border-b border-gray-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                            <i data-lucide="history" class="w-5 h-5 text-purple-600"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">Riwayat Verifikasi</h2>
+                            <p class="text-sm text-gray-500">Log aktivitas verifikasi</p>
+                        </div>
                     </div>
+                </div>
+                <div class="p-6 space-y-4">
+                    @foreach($verificationHistory as $verification)
+                    <div class="flex gap-4 p-4 bg-gray-50 rounded-xl">
+                        <div class="flex-shrink-0">
+                            @if($verification->isApproved())
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                    <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
+                                </div>
+                            @else
+                                <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                    <i data-lucide="x" class="w-5 h-5 text-red-600"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-semibold text-gray-800">{{ $verification->status }}</span>
+                                <span class="text-xs text-gray-500">{{ $verification->verified_at?->format('d M Y, H:i') }}</span>
+                            </div>
+                            <p class="text-sm text-gray-600">oleh {{ $verification->verifikator->name ?? '-' }}</p>
+                            @if($verification->alasan)
+                                <p class="mt-2 text-sm text-gray-700 italic bg-white p-3 rounded-lg border border-gray-200">"{{ $verification->alasan }}"</p>
+                            @endif
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
             </div>
             @endif
         </div>
 
         <!-- Verification Actions -->
-        <div class="col-lg-4">
+        <div class="space-y-6">
             @if($content->isPending())
             <!-- Approve Form -->
-            <div class="card mb-4 border-success">
-                <div class="card-header bg-success text-white">
-                    <h5 class="mb-0"><i class="bi bi-check-circle me-2"></i>Setujui Konten</h5>
+            <div class="bg-white rounded-2xl shadow-sm border-2 border-green-200 overflow-hidden">
+                <div class="p-5 bg-gradient-to-r from-green-500 to-emerald-500 text-white">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                            <i data-lucide="check-circle" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg">Setujui Konten</h3>
+                    </div>
                 </div>
-                <div class="card-body">
+                <div class="p-5">
                     <form method="POST" action="{{ route('operator.verification.approve', $content->id) }}">
                         @csrf
-                        <div class="mb-3">
-                            <label for="alasan_approve" class="form-label">Alasan (Opsional)</label>
-                            <textarea name="alasan" id="alasan_approve" class="form-control" rows="3"
+                        <div class="mb-4">
+                            <label for="alasan_approve" class="block text-sm font-semibold text-gray-700 mb-2">Alasan (Opsional)</label>
+                            <textarea name="alasan" id="alasan_approve" rows="3"
+                                      class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-gray-50"
                                       placeholder="Masukkan alasan persetujuan..."></textarea>
                         </div>
-                        <button type="submit" class="btn btn-success w-100">
-                            <i class="bi bi-check-lg me-1"></i> Setujui
+                        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl font-semibold transition-colors shadow-lg shadow-green-500/30">
+                            <i data-lucide="check" class="w-5 h-5"></i>
+                            Setujui Konten
                         </button>
                     </form>
                 </div>
             </div>
 
             <!-- Reject Form -->
-            <div class="card border-danger">
-                <div class="card-header bg-danger text-white">
-                    <h5 class="mb-0"><i class="bi bi-x-circle me-2"></i>Tolak Konten</h5>
+            <div class="bg-white rounded-2xl shadow-sm border-2 border-red-200 overflow-hidden">
+                <div class="p-5 bg-gradient-to-r from-red-500 to-rose-500 text-white">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                            <i data-lucide="x-circle" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-semibold text-lg">Tolak Konten</h3>
+                    </div>
                 </div>
-                <div class="card-body">
+                <div class="p-5">
                     <form method="POST" action="{{ route('operator.verification.reject', $content->id) }}">
                         @csrf
-                        <div class="mb-3">
-                            <label for="alasan_reject" class="form-label">Alasan <span class="text-danger">*</span></label>
-                            <textarea name="alasan" id="alasan_reject" class="form-control @error('alasan') is-invalid @enderror" 
-                                      rows="3" placeholder="Masukkan alasan penolakan..." required>{{ old('alasan') }}</textarea>
+                        <div class="mb-4">
+                            <label for="alasan_reject" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Alasan <span class="text-red-500">*</span>
+                            </label>
+                            <textarea name="alasan" id="alasan_reject" rows="3" required
+                                      class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-gray-50 @error('alasan') border-red-500 @enderror"
+                                      placeholder="Masukkan alasan penolakan...">{{ old('alasan') }}</textarea>
+                            <p class="mt-1.5 text-xs text-gray-500">Minimal 10 karakter</p>
                             @error('alasan')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <p class="mt-1.5 text-sm text-red-500 flex items-center gap-1">
+                                    <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                                    {{ $message }}
+                                </p>
                             @enderror
-                            <small class="text-muted">Minimal 10 karakter</small>
                         </div>
-                        <button type="submit" class="btn btn-danger w-100">
-                            <i class="bi bi-x-lg me-1"></i> Tolak
+                        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-xl font-semibold transition-colors shadow-lg shadow-red-500/30">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                            Tolak Konten
                         </button>
                     </form>
                 </div>
             </div>
             @else
-            <div class="card">
-                <div class="card-body text-center">
-                    <i class="bi bi-info-circle text-info" style="font-size: 3rem;"></i>
-                    <h5 class="mt-3">Konten Sudah Diverifikasi</h5>
-                    <p class="text-muted">Status: <strong>{{ $content->status }}</strong></p>
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="info" class="w-8 h-8 text-blue-600"></i>
                 </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Konten Sudah Diverifikasi</h3>
+                <p class="text-gray-500">Status saat ini:</p>
+                @php
+                    $statusConfig = match($content->status) {
+                        'Approved' => ['class' => 'bg-green-100 text-green-700', 'icon' => 'check-circle'],
+                        'Rejected' => ['class' => 'bg-red-100 text-red-700', 'icon' => 'x-circle'],
+                        default => ['class' => 'bg-gray-100 text-gray-700', 'icon' => 'file']
+                    };
+                @endphp
+                <span class="inline-flex items-center gap-2 px-4 py-2 {{ $statusConfig['class'] }} rounded-xl font-semibold mt-2">
+                    <i data-lucide="{{ $statusConfig['icon'] }}" class="w-5 h-5"></i>
+                    {{ $content->status }}
+                </span>
             </div>
             @endif
         </div>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    lucide.createIcons();
+</script>
+@endpush

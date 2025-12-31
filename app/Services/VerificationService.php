@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Content;
 use App\Models\User;
 use App\Models\Verification;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -148,5 +149,58 @@ class VerificationService
     {
         return Content::with(['skpd', 'publisher', 'kategori', 'verifications.verifikator'])
             ->find($contentId);
+    }
+
+    /**
+     * Get all verification history with filters and pagination.
+     * 
+     * Requirements: 1.2, 1.3, 1.4
+     *
+     * @param array $filters Optional filters (start_date, end_date, skpd_id, status, search)
+     * @return LengthAwarePaginator Paginated verification records
+     */
+    public function getAllVerificationHistory(array $filters = []): LengthAwarePaginator
+    {
+        $query = Verification::with([
+            'content',
+            'content.skpd',
+            'content.kategori',
+            'verifikator'
+        ]);
+
+        // Apply date range filter
+        if (!empty($filters['start_date'])) {
+            $query->whereDate('verified_at', '>=', $filters['start_date']);
+        }
+
+        if (!empty($filters['end_date'])) {
+            $query->whereDate('verified_at', '<=', $filters['end_date']);
+        }
+
+        // Apply SKPD filter
+        if (!empty($filters['skpd_id'])) {
+            $query->whereHas('content', function ($q) use ($filters) {
+                $q->where('skpd_id', $filters['skpd_id']);
+            });
+        }
+
+        // Apply status filter
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        // Apply search filter on content title
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+            $query->whereHas('content', function ($q) use ($search) {
+                $q->where('judul', 'like', "%{$search}%");
+            });
+        }
+
+        // Order by most recent first
+        $query->orderBy('verified_at', 'desc');
+
+        // Return paginated results (20 per page)
+        return $query->paginate(20);
     }
 }

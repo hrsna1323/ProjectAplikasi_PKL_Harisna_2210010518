@@ -40,7 +40,7 @@ Task list ini mengikuti pendekatan incremental development, dimulai dari setup d
   - [x] 1.3 Implementasi SKPD model dengan relationships
 
 
-    - Definisikan fillable fields: nama_skpd, website_url, email, kuota_bulanan, status
+    - Definisikan fillable fields:  nama_skpd, website_url, email, kuota_bulanan, status
     - Implementasi relationships: hasMany Contents, hasMany Users (publishers)
     - Tambahkan default value kuota_bulanan = 3
     - _Requirements: 2.1, 2.2_

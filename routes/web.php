@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// React SPA Route
+Route::get('/react', function () {
+    return view('react');
+})->name('react');
+
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
@@ -33,6 +38,7 @@ Route::middleware(['auth.custom'])->group(function () {
     Route::middleware(['operator'])->prefix('operator')->name('operator.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'operator'])->name('dashboard');
         Route::get('/verification', [VerificationController::class, 'index'])->name('verification.index');
+        Route::get('/verification/history', [VerificationController::class, 'historyIndex'])->name('verification.history.index');
         Route::get('/verification/{content}', [VerificationController::class, 'show'])->name('verification.show');
         Route::get('/verification/{content}/history', [VerificationController::class, 'history'])->name('verification.history');
         Route::post('/verification/{content}/approve', [VerificationController::class, 'approve'])->name('verification.approve');
@@ -56,5 +62,6 @@ Route::middleware(['auth.custom'])->group(function () {
         Route::get('/skpd-performance', [ReportController::class, 'skpdPerformance'])->name('skpd-performance');
         Route::get('/export/content', [ReportController::class, 'exportContentReport'])->name('export.content');
         Route::get('/export/skpd', [ReportController::class, 'exportSkpdReport'])->name('export.skpd');
+        Route::get('/export/dashboard', [ReportController::class, 'exportDashboardReport'])->name('export.dashboard');
     });
 });
